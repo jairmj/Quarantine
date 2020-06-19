@@ -1,14 +1,17 @@
 #pragma once
 #include "Personaje.h"
-#include <iostream>
-#include <string>
+
+
 using namespace std;
 class Jugador :	public Personaje
 {
 private:
-	string* arreglo_mensaje = new string[10];
-protected:
+public:
+	int direccion;
 	Jugador();
+	Jugador(int pini_f, int pfin_f, int pini_c, int pfin_c);
 	~Jugador();
+
+	void caminar(Graphics^ g, Bitmap^ img);
 };
 
