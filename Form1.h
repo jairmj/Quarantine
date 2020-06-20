@@ -20,7 +20,10 @@ namespace CppCLRWinformsProjekt {
 			InitializeComponent();
 			obj = new Juego();
 			img_jugador = gcnew Bitmap("jugador_sprites10.png");
+			img_adversario_tipo1 = gcnew Bitmap("infectadoG_sprites.png");
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
+			img_ambulancia = gcnew Bitmap("ambulancia_sprite.png");
+
 			mapa1 = gcnew Bitmap("mapa_sjl.png");
 		}
 
@@ -42,7 +45,9 @@ namespace CppCLRWinformsProjekt {
 	private:
 		Juego* obj;
 		Bitmap^ img_jugador;
+		Bitmap^ img_adversario_tipo1;
 		Bitmap^ img_proyectiles;
+		Bitmap^ img_ambulancia;
 		Bitmap^ mapa1;
 
 #pragma region Windows Form Designer generated code
@@ -86,7 +91,7 @@ namespace CppCLRWinformsProjekt {
 		buffer->Graphics->DrawImage(mapa1, 0, 0, porcion_dibujo, GraphicsUnit::Pixel);
 
 
-		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles);
+		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles, img_ambulancia, img_adversario_tipo1);
 
 		buffer->Render(g);
 

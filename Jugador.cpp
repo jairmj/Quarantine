@@ -26,7 +26,7 @@ void Jugador::disparar() {
 	if (sf == 3) {// arriba
 		copia[cantidad_proyectiles]->set_dy(-3);
 		//Para decir de donde sale la bala
-		copia[cantidad_proyectiles]->set_pos_y(pos_y - 76);
+		copia[cantidad_proyectiles]->set_pos_y(pos_y -  76);
 		copia[cantidad_proyectiles]->set_pos_x(pos_x + w / 2);
 
 	}

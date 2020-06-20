@@ -3,6 +3,7 @@ class Vehiculo
 {
 private:
 	int pos_x, pos_y, dx, dy, velocidad;
+	int sf, sc, w, h, ini_f, fin_f, inic_c, fin_c;
 protected:
 	Vehiculo();
 	~Vehiculo();

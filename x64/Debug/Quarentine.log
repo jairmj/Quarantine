@@ -1,3 +1,4 @@
-﻿  Jugador.cpp
+﻿  CppCLR_WinformsProjekt.cpp
+C:\Users\USUARIO\Google Drive\Universidad\Ing Software\Ciclo 2\Progra II\TrabajoFinal\Quarantine\CppCLR_WinformsProjekt.cpp(18,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
   Adversario.obj : se encontró un módulo MSIL; vinculación incremental deshabilitada para MSIL; ejecutando vínculo completo
   Quarentine.vcxproj -> C:\Users\USUARIO\Google Drive\Universidad\Ing Software\Ciclo 2\Progra II\TrabajoFinal\Quarantine\x64\Debug\Quarantine.exe

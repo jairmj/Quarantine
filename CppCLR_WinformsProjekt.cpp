@@ -1,4 +1,6 @@
 #include "pch.h"
+#include <stdlib.h>
+#include <time.h>
 
 using namespace System;
 
@@ -13,6 +15,7 @@ using namespace System::Windows::Forms;
 
 [STAThread]
 int main() {
+	srand(time(NULL));
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::Run(gcnew CppCLRWinformsProjekt::Form1()); 

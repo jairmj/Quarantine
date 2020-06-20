@@ -48,6 +48,15 @@ void Juego::Init() {
 	jugador_user = new Jugador(0, 0, 0, 0);
 	jugador_user->cambiar_sf(0);
 	jugador_user->cambiar_sc(0);
+	ambulancia = new Ambulancia(0, 1, 0, 1);
+	ambulancia->cambiar_sc(0);
+	ambulancia->cambiar_sf(0);
+	adversario_tipo1 = new Adversario(0, 0, 0, 0);
+	adversario_tipo1->cambiar_sc(0);
+	adversario_tipo1->cambiar_sf(1);
+
+
+
 	//int cantidad_enemigos = rand() % 6 + 5;
 	//arreglo_adversarios = new Adversario * [cantidad_enemigos];
 	//int intercalador = 1;
@@ -58,8 +67,10 @@ void Juego::Init() {
 void Juego::mostrar_inicio(){}
 void Juego::mostrar_mapa_principal(){}
 void Juego::mostrar_mapa_secundario(){}
-void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles){
+void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1){
 	jugador_user->caminar(g, img, img_proyectiles);
+	ambulancia->mover(g, img_ambulancia);
+	adversario_tipo1->mover(g, img_adversario_tipo1);
 }
 
 void Juego::cambiar_direccion(int direccion) {
