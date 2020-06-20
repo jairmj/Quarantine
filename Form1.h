@@ -19,7 +19,7 @@ namespace CppCLRWinformsProjekt {
 		{
 			InitializeComponent();
 			obj = new Juego();
-			img_jugador = gcnew Bitmap("jugador_sprites.png");
+			img_jugador = gcnew Bitmap("jugador_sprites10.png");
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
 			mapa1 = gcnew Bitmap("mapa_sjl.png");
 		}
@@ -67,8 +67,9 @@ namespace CppCLRWinformsProjekt {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1084, 859);
 			this->Name = L"Form1";
-			this->Text = L"Quarentine";
+			this->Text = L"Quarantine";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::Form1_KeyDown);
 			this->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::Form1_KeyPress);
 			this->ResumeLayout(false);
 
@@ -83,7 +84,9 @@ namespace CppCLRWinformsProjekt {
 
 		Rectangle porcion_dibujo = Rectangle(0, 0, mapa1->Width, mapa1->Height);
 		buffer->Graphics->DrawImage(mapa1, 0, 0, porcion_dibujo, GraphicsUnit::Pixel);
-		obj->dinamica_juego(buffer->Graphics, img_jugador);
+
+
+		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles);
 
 		buffer->Render(g);
 
@@ -114,5 +117,8 @@ namespace CppCLRWinformsProjekt {
 
 
 	}
-	};
+	private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (e->KeyCode == Keys::Space)obj->disparar();
+	}
+};
 }

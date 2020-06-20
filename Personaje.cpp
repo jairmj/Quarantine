@@ -3,6 +3,7 @@
 
 Personaje::Personaje() {}
 Personaje::Personaje(int pini_f, int pfin_f, int pini_c, int pfin_c) {
+	cantidad_proyectiles = 0;
 }
 Personaje::~Personaje(){}
 
@@ -33,11 +34,10 @@ int Personaje::Personaje::return_vida() { return vida; }
 void Personaje::correr(){
 
 }
-void Personaje::disparar(){
 
-}
 void Personaje::dibujar(Graphics^ g, Bitmap^ img) {
 
 	Rectangle porcion_dibujo = Rectangle(w * sc, h * sf, w, h);
 	g->DrawImage(img, pos_x, pos_y, porcion_dibujo, GraphicsUnit::Pixel);
 }
+

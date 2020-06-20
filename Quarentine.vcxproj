@@ -25,6 +25,7 @@
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>Quarentine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Quarantine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -153,6 +154,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Policia.h" />
+    <ClInclude Include="Proyectil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Vehiculo.h" />
   </ItemGroup>
@@ -172,6 +174,7 @@
     </ClCompile>
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="Policia.cpp" />
+    <ClCompile Include="Proyectil.cpp" />
     <ClCompile Include="Vehiculo.cpp" />
   </ItemGroup>
   <ItemGroup>

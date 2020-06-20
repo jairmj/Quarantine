@@ -15,10 +15,10 @@ public:
 	void mostrar_inicio();
 	void mostrar_mapa_principal();
 	void mostrar_mapa_secundario();
-	void dinamica_juego(Graphics^ g, Bitmap^ img);
+	void dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles);
 	void Init();
 	Adversario* crear_enemigo(int tipo);
-	void mover_jugador(Graphics^ g, Bitmap^ img);
 	void cambiar_direccion(int direccion);
+	void disparar();
 };
 

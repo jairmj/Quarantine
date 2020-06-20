@@ -6,8 +6,10 @@ protected:
 	
 	int vida, pos_x, pos_y, dx, dy, arma, velocidad;
 	int sf, sc, w, h, ini_f, fin_f, inic_c, fin_c; //Fila y columna del personaje a mostrar
+	int cantidad_proyectiles;
 
 public:
+	int direccion;
 	Personaje();
 	Personaje(int pini_f, int pfin_f, int pini_c, int pfin_c);
 	~Personaje();
@@ -40,5 +42,6 @@ public:
 	void correr();
 	void disparar();
 	void dibujar(Graphics^ g, Bitmap^ img);
+	
 };
 

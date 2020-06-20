@@ -58,14 +58,14 @@ void Juego::Init() {
 void Juego::mostrar_inicio(){}
 void Juego::mostrar_mapa_principal(){}
 void Juego::mostrar_mapa_secundario(){}
-void Juego::dinamica_juego(Graphics^ g, Bitmap^ img){
-	mover_jugador(g, img);
-}
-void Juego::mover_jugador(Graphics^ g, Bitmap^ img) {
-	jugador_user->caminar(g, img);
-
+void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles){
+	jugador_user->caminar(g, img, img_proyectiles);
 }
 
 void Juego::cambiar_direccion(int direccion) {
 	jugador_user->direccion = direccion;
+}
+
+void Juego::disparar() {
+	jugador_user->disparar();
 }
