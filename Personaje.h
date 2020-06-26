@@ -43,5 +43,6 @@ public:
 	void disparar();
 	void dibujar(Graphics^ g, Bitmap^ img);
 	
+	
 };
 

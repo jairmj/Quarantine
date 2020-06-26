@@ -5,7 +5,7 @@ Jugador::Jugador() {}
 
 Jugador::Jugador(int pini_f, int pfin_f, int pini_c, int pfin_c): Personaje(pini_f, pfin_f, pini_c, pfin_c) {
 	pos_x = 100;
-	pos_y = 100;
+	pos_y = 40;
 	direccion = 0;
 	velocidad = 5;
 }
@@ -100,26 +100,26 @@ void Jugador::caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles) {
 	switch (direccion) {
 
 	case 0: {//Arriba
-		if (pos_y - 5 > g->VisibleClipBounds.Top)dy = -velocidad; dx = 0;
+		if (pos_y  > g->VisibleClipBounds.Top) dy = -velocidad; dx = 0;
 		sc++;
 		sf = 3;
 		break;
 	}
 	case 1: {// Abajo
-		if (pos_y + 5 + h < g->VisibleClipBounds.Bottom) dy = velocidad; dx = 0;
+		if (pos_y + h < g->VisibleClipBounds.Bottom ) dy = velocidad; dx = 0;
 		sc++;
 		sf = 0;
 		break;
 	}
 	case 2: {//izq
-		if (pos_x - 5 > g->VisibleClipBounds.Left) dx = -velocidad; dy = 0;
+		if (pos_x  > g->VisibleClipBounds.Left && pos_x > 25) dx = -velocidad; dy = 0;
 		sc++;
 		sf = 2;
 		break; 
 	
 	}
 	case 3: {//derecha
-		if (pos_x + 5 + w < g->VisibleClipBounds.Right) dx = velocidad; dy = 0;
+		if (pos_x + w < g->VisibleClipBounds.Right && (pos_x  + w < 50 + w)) dx = velocidad; dy = 0;
 		sc++;
 		sf = 1;
 		break; 
@@ -144,3 +144,10 @@ void Jugador::caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles) {
 	mover_proyectiles(g, img_proyectiles);
 }
 
+bool Jugador::determinar_disponibilidad_posicion(int x, int y) {
+
+
+
+
+	return true;
+}
