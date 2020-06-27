@@ -15,6 +15,6 @@ public:
 	void caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles);
 	void mover_proyectiles(Graphics^ g, Bitmap^ img_bala);
 	void disparar();
-	bool determinar_disponibilidad_posicion(int x, int y);
+	bool determinar_disponibilidad_posicion(int x, int y, int direccion);
 };
 
