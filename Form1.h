@@ -28,17 +28,18 @@ namespace CppCLRWinformsProjekt {
 			//Enemigos asintomáticos
 			img_adversario_asintomatico = gcnew Bitmap("Infectado_asintomatico_normal.png");
 			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo_v2.png");
-			//Policía
-
-
-			//Proyectiles y vehículos
+			//Proyectiles y encautadores 
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
 			img_ambulancia = gcnew Bitmap("ambulancia.png");
+			img_policia = gcnew Bitmap("img_policia_v2.png");
+			//Ladron
+			img_ladron = gcnew Bitmap("ladron_sprites_v2.png");
 
 			//******************************************************************************
 
 			//Mapas
 			mapa_1_sjl = gcnew Bitmap("mapa_sjl.png");
+			mapa_brena = gcnew Bitmap("mapa_brena.png");
 		}
 
 	protected:
@@ -71,11 +72,14 @@ namespace CppCLRWinformsProjekt {
 
 		Bitmap^ img_proyectiles;
 		Bitmap^ img_ambulancia;
+		Bitmap^ img_policia;
+		Bitmap^ img_ladron;
 		//*************************************************
 
 
 		//Mapas
 		Bitmap^ mapa_1_sjl;
+		Bitmap^ mapa_brena;
 
 		//**************Contador y puntos
 		String^ segundero;
@@ -122,14 +126,14 @@ namespace CppCLRWinformsProjekt {
 		//****************************************************************************************
 
 		//Mapa************************************************************************************
-		Rectangle porcion_dibujo = Rectangle(0, 0, mapa_1_sjl->Width, mapa_1_sjl->Height);
-		buffer->Graphics->DrawImage(mapa_1_sjl, 0, 0, porcion_dibujo, GraphicsUnit::Pixel);
+		
 		//****************************************************************************************
 		
 		//Juego***********************************************************************************
-		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles,
+		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles, mapa_1_sjl, mapa_brena,
 			img_ambulancia, img_adversario_saludable, img_adversario_saludable_marcado, 
-			img_adversario_asintomatico, img_adversario_asintomatico_marcado, segundero, minutero, puntos);
+			img_adversario_asintomatico, img_adversario_asintomatico_marcado, img_policia,
+			img_ladron, segundero, minutero, puntos);
 
 
 

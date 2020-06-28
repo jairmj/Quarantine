@@ -24,20 +24,21 @@ void Adversario::establecer_posicion(std::string nuevo) { posicion = nuevo; }
 void Adversario::establecer_posicion_destino(std::string nuevo) { posicion_destino = nuevo; }
 
 void Adversario::mover(Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
-	Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, int contador_timer) {
+	Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, Bitmap^ img_ladron, int contador_timer) {
 
 	w = img_adversario_tipo1->Width / 4;
 	h = img_adversario_tipo1->Height / 4;
 
 	pos_x += w; pos_y += h;
 	
-	caminar_desde_hasta(posicion, posicion_destino, g, img_adversario_tipo1, img_adversario_tipo1_marcado, img_adversario_tipo2, img_adversario_tipo2_marcado, contador_timer);
+	caminar_desde_hasta(posicion, posicion_destino, g, img_adversario_tipo1, img_adversario_tipo1_marcado, img_adversario_tipo2, img_adversario_tipo2_marcado, img_ladron, contador_timer);
 }
 
 
 void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_final,
 									Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
-									Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, int contador_timer)
+									Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado,
+									Bitmap^ img_ladron, int contador_timer)
 {
 
 
@@ -56,7 +57,6 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 	*/
 
 	// Hacia B
-	//Listo
 	if(pos_inicial == "A" && pos_final == "B") {
 		if (pos_x < 576) {// Caminar hacia la derecha
 			sf = 1; pos_x += 3;
@@ -97,7 +97,7 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 					animacion = 0; posicion = "B";		
 					
 					if (tipo == 1) posicion_destino = "A"; //Si es tipo 1 que vuelva a A
-					else if (tipo == 2) {
+					else if (tipo == 2 || tipo == 3) {
 						switch (rand()%3)//Es tipo 2, posición destino aleatoria en todo el mapa
 						{
 							case 0: { posicion_destino = "A"; break; }
@@ -148,7 +148,7 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 					animacion = 0; posicion = "B";
 
 					if (tipo == 1) posicion_destino = "A"; //Si es tipo 1 que vuelva a A
-					else if (tipo == 2) {
+					else if (tipo == 2 || tipo == 3) {
 						switch (rand() % 3)//Es tipo 2, posición destino aleatoria en todo el mapa
 						{
 						case 0: { posicion_destino = "A"; break; }
@@ -206,7 +206,7 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 						animacion = 0; posicion = "B";
 
 						if (tipo == 1) posicion_destino = "A"; //Si es tipo 1 que vuelva a A
-						else if (tipo == 2) {
+						else if (tipo == 2 || tipo == 3) {
 							switch (rand() % 3)//Es tipo 2, posición destino aleatoria en todo el mapa
 							{
 							case 0: { posicion_destino = "A"; break; }
@@ -224,8 +224,7 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 	}
 
 	// Desde B hacia el resto
-	//Listo
-	else if (posicion == "B" && posicion_destino == "A" && tipo == 2) {//Camino 1
+	else if (posicion == "B" && posicion_destino == "A" && tipo == 2 || tipo == 3) {//Camino 1
 		if (pos_y > 110) {// Caminar hacia la arriba
 			sf = 3; pos_y -= 3;
 
@@ -400,14 +399,17 @@ void Adversario::caminar_desde_hasta(std::string pos_inicial, std::string pos_fi
 	}
 
 
-	if (tipo == 1 && vivo) {
+	if (tipo == 1 && vivo && !ladron) {
 		if (color == 1)dibujar(g, img_adversario_tipo1);
 		if (color == 2)dibujar(g, img_adversario_tipo1_marcado);
 
 	}
-	else if (tipo == 2 && vivo) {
+	else if (tipo == 2 && vivo && !ladron) {
 		if (color == 1)dibujar(g, img_adversario_tipo2);
 		if (color == 2)dibujar(g, img_adversario_tipo2_marcado);
+	}
+	else if (ladron && vivo) {
+		dibujar(g,img_ladron);
 	}
 }
 
