@@ -36,6 +36,7 @@ public:
 	int retornar_sc();
 	int return_vida();
 	int retornar_direccion();
+	int retornar_cantidad_proyectiles();
 
 
 	void caminar(Graphics^ g, Bitmap^ img);

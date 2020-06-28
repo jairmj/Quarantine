@@ -26,6 +26,7 @@ int Personaje::retornar_w() { return w; }
 int Personaje::retornar_h() { return h; }
 int Personaje::retornar_sf() { return sf; }
 int Personaje::retornar_sc() { return sc; }
+int Personaje::retornar_cantidad_proyectiles() { return cantidad_proyectiles; }
 int Personaje::Personaje::return_vida() { return vida; }
 //int Personaje::retornar_direccion() { return direccion; }
 

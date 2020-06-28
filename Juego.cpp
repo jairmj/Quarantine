@@ -19,41 +19,35 @@ Juego::~Juego(){}
 Adversario* Juego::crear_enemigo(int tipo) {
 
 	Adversario* nuevo_adversario = new Adversario(0, 0, 0, 0);
-	if (tipo == 0) {//Enemigo de tipo 1, x entre 0 y 450, y entre 0 y 400 
-		nuevo_adversario->set_pos_x(rand() % 451);
-		nuevo_adversario->set_pos_y(rand() % 401);
-		nuevo_adversario->set_vida(5);
-		nuevo_adversario->set_dx(0);
-		nuevo_adversario->set_dy(0);
-		switch (rand() % 4) //Movimiento aleatorio
-		{
-		case 0: {nuevo_adversario->set_dx(1);break;}
-		case 1: {nuevo_adversario->set_dx(-1);break;}
-		case 2: {nuevo_adversario->set_dy(1);break;}
-		case 3: {nuevo_adversario->set_dy(-1);break;}
-		default: break;}
+	nuevo_adversario->set_vida(5);
+	nuevo_adversario->establecer_posicion_destino("B");
+	nuevo_adversario->cambiar_sf(0);
+	nuevo_adversario->cambiar_sc(0);
+
+	if (tipo == 1) {//Enemigo tipo 1, comienza en el punto A
+		nuevo_adversario->set_pos_x(91 - 61);
+		nuevo_adversario->set_pos_y(110 - 80);
+		nuevo_adversario->establecer_posicion("A");
+		nuevo_adversario->establecer_tipo(1);
 	}
 	else {//Enemigo de tipo 2
-		nuevo_adversario->set_pos_x(rand() % 451);
-		nuevo_adversario->set_pos_y(rand() % 401);
-		nuevo_adversario->set_vida(5);
-		nuevo_adversario->set_dx(0);
-		nuevo_adversario->set_dy(0);
-		switch (rand() % 4) //Movimiento aleatorio
-		{
-		case 0: {nuevo_adversario->set_dx(1); break; }
-		case 1: {nuevo_adversario->set_dx(-1); break; }
-		case 2: {nuevo_adversario->set_dy(1); break; }
-		case 3: {nuevo_adversario->set_dy(-1); break; }
-		default: break;
-		}
+		nuevo_adversario->set_pos_x(896 - 61);
+		nuevo_adversario->set_pos_y(555 - 80);
+		nuevo_adversario->establecer_posicion("C");
+		nuevo_adversario->establecer_tipo(2);
 	}
-
+	arreglo_adversarios[cantidad_adversarios] = nuevo_adversario;
+	cantidad_adversarios++;
 
 	return nuevo_adversario;
 }
 
 void Juego::Init() {
+	cantidad_adv_tipo1 = cantidad_adv_tipo2 = 0;
+	cantidad_maxima_adversarios = rand() % 6 + 5;
+	arreglo_adversarios = new Adversario * [cantidad_maxima_adversarios];
+	cantidad_adversarios = 0;
+	
 	jugador_user = new Jugador(0, 0, 0, 0);
 	jugador_user->cambiar_sf(0);
 	jugador_user->cambiar_sc(0);
@@ -64,14 +58,7 @@ void Juego::Init() {
 	ambulancia->cambiar_sf(0);
 
 
-	adversario_tipo1 = new Adversario(0, 0, 0, 0);
-	adversario_tipo1->cambiar_sc(0);
-	adversario_tipo1->cambiar_sf(1);
-	adversario_tipo1->establecer_tipo(2);
 
-	//Establecer posición en base a la esquina derecha inferior del sprite.
-	adversario_tipo1->set_pos_x(91 - 61);
-	adversario_tipo1->set_pos_y(110 - 80);
 
 
 	
@@ -88,9 +75,11 @@ void Juego::mostrar_inicio(){}
 void Juego::mostrar_mapa_principal(){}
 void Juego::mostrar_mapa_secundario(){}
 void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles,
-							Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1,
+							Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
 							String^ segundero, String^ minutero)
 {
+
+	colisiones();
 
 	contador_timer++; //Aumenta 1 cada 100 ms, cada 10 es 1 segundo
 	if (contador_timer % 10 == 0 && contador_timer != 0) {
@@ -99,11 +88,51 @@ void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles,
 			minutos++;
 			segundos = 0;
 		}
+	
+
+		if (segundos % 10 == 0 && segundos != 0) {
+			switch (rand() % 2 + 1)// 1 y 2
+			{
+			case 1: {
+				if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
+					if (cantidad_adv_tipo1 <= cantidad_maxima_adversarios / 2) {
+						crear_enemigo(1);
+						cantidad_adv_tipo1++;// es 3
+					}
+					else {
+						crear_enemigo(2);
+						cantidad_adv_tipo2++;// es 1
+					}
+				}
+				break;
+			}
+			case 2: {
+				if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
+					if (cantidad_adv_tipo2 <= cantidad_maxima_adversarios / 2) {
+						crear_enemigo(2);
+						cantidad_adv_tipo2++;
+					}
+					else {
+						crear_enemigo(1);
+						cantidad_adv_tipo1++;
+					}
+				}
+				break;
+			}
+			default:
+				break;
+			}
+		}
 	}
+
+
 	mostrar_tiempo(g, segundero, minutero);
 	jugador_user->caminar(g, img, img_proyectiles);
 	ambulancia->mover(g, img_ambulancia);
-	adversario_tipo1->mover(g, img_adversario_tipo1, contador_timer);
+	for (int i = 0; i < cantidad_adversarios; i++) {
+		arreglo_adversarios[i]->mover(g,img_adversario_tipo1, img_adversario_tipo1_marcado,contador_timer);
+	}
+	//adversario_tipo1->mover(g, img_adversario_tipo1, contador_timer);
 }
 
 void Juego::cambiar_direccion(int direccion) {
@@ -125,4 +154,36 @@ void Juego::mostrar_tiempo(Graphics^ g, String^ segundero, String^ minutero) {
 	g->DrawString(segundero, myfont, mybrush, 20, 10);
 	g->DrawString(minutero, myfont, mybrush, 10, 10);
 	
+}
+
+bool Juego::ayudaColisionEnemigo_proyectil(Adversario* e1, Proyectil* e2) {
+	Rectangle r1, r2;
+
+	r1.X = e1->return_pos_x();
+	r1.Y = e1->return_pos_y();
+	r1.Width = e1->retornar_w();
+	r1.Height = e1->retornar_h();
+
+
+	r2.X = e2->return_pos_x();
+	r2.Y = e2->return_pos_y();
+	r2.Width = e2->retornar_w();
+	r2.Height = e2->retornar_h();
+
+	return r1.IntersectsWith(r2);
+}
+
+void Juego::colisiones(){
+	//Proyectiles con los enemigos
+	if (jugador_user->retornar_cantidad_proyectiles() > 0 && cantidad_adversarios > 0) {//Si hay proyectiles y enemigos actualmente
+		for (int adv = 0; adv < cantidad_adversarios; adv++) {
+			for (int bala = 0; bala < jugador_user->retornar_cantidad_proyectiles(); bala++) {
+				if (ayudaColisionEnemigo_proyectil(arreglo_adversarios[adv], jugador_user->arreglo_proyectiles[bala])) {//Si una bala choca con un enemigo
+					jugador_user->arreglo_proyectiles[bala]->cambiar_eliminar(true);
+					arreglo_adversarios[adv]->cambiar_color();
+				}
+			}
+		}
+	}
+
 }

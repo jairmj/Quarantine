@@ -24,7 +24,7 @@ namespace CppCLRWinformsProjekt {
 			img_jugador = gcnew Bitmap("jugador_principal.png");
 			//Enemigos saludables
 			img_adversario_saludable = gcnew Bitmap("Infectado_saludable_normal_v2.png");
-			img_adversario_saludable_marcado = gcnew Bitmap("Infectado_saludable_verde.png");
+			img_adversario_saludable_marcado = gcnew Bitmap("Infectado_saludable_verde_V2.png");
 			//Enemigos asintomáticos
 			//img_adversario_asintomatico = gcnew Bitmap("Infectado_asintomatico_normal.png");
 			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo.png");
@@ -127,7 +127,9 @@ namespace CppCLRWinformsProjekt {
 		
 		//Juego***********************************************************************************
 		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles,
-			img_ambulancia, img_adversario_saludable, segundero, minutero);
+			img_ambulancia, img_adversario_saludable, img_adversario_saludable_marcado ,segundero, minutero);
+
+
 
 		//Prueba escribir en pantalla*************************************************************
 
