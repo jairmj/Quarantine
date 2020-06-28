@@ -53,30 +53,19 @@ void Juego::Init() {
 	jugador_user->cambiar_sc(0);
 
 
-	ambulancia = new Ambulancia(0, 1, 0, 1);
+	ambulancia = new Ambulancia(0, 4, 0, 4);
 	ambulancia->cambiar_sc(0);
 	ambulancia->cambiar_sf(0);
 
-
-
-
-
-	
 	contador_timer = segundos = minutos = 0;
-
-	//int cantidad_enemigos = rand() % 6 + 5;
-	//arreglo_adversarios = new Adversario * [cantidad_enemigos];
-	//int intercalador = 1;
-	//for (int i = 0; i < cantidad_enemigos; i++) {
-	//	arreglo_adversarios[i] = crear_enemigo((i%2));
-	//}
 }
 void Juego::mostrar_inicio(){}
 void Juego::mostrar_mapa_principal(){}
 void Juego::mostrar_mapa_secundario(){}
 void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles,
 							Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
-							String^ segundero, String^ minutero)
+							Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado,
+							String^ segundero, String^ minutero, String^ puntos_string)
 {
 
 	colisiones();
@@ -127,10 +116,12 @@ void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles,
 
 
 	mostrar_tiempo(g, segundero, minutero);
+	mostrar_puntos(g, puntos_string);
 	jugador_user->caminar(g, img, img_proyectiles);
-	ambulancia->mover(g, img_ambulancia);
+	ambulancia->mover(g, img_ambulancia, arreglo_adversarios, cantidad_adversarios);
 	for (int i = 0; i < cantidad_adversarios; i++) {
-		arreglo_adversarios[i]->mover(g,img_adversario_tipo1, img_adversario_tipo1_marcado,contador_timer);
+		arreglo_adversarios[i]->mover(g,img_adversario_tipo1, img_adversario_tipo1_marcado,
+										img_adversario_tipo2, img_adversario_tipo2_marcado, contador_timer);
 	}
 	//adversario_tipo1->mover(g, img_adversario_tipo1, contador_timer);
 }
@@ -156,7 +147,33 @@ void Juego::mostrar_tiempo(Graphics^ g, String^ segundero, String^ minutero) {
 	
 }
 
+void Juego::mostrar_puntos(Graphics^ g, String^ puntos_string) {
+
+	puntos_string = "Puntos: " + jugador_user->retornar_puntos().ToString();
+	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Arial", 10);
+	System::Drawing::SolidBrush^ mybrush = gcnew System::Drawing::SolidBrush(Color::Black);
+	g->DrawString(puntos_string, myfont, mybrush, 1000, 10);
+	
+}
+
 bool Juego::ayudaColisionEnemigo_proyectil(Adversario* e1, Proyectil* e2) {
+	Rectangle r1, r2;
+
+	r1.X = e1->return_pos_x();
+	r1.Y = e1->return_pos_y();
+	r1.Width = e1->retornar_w();
+	r1.Height = e1->retornar_h();
+
+
+	r2.X = e2->return_pos_x();
+	r2.Y = e2->return_pos_y();
+	r2.Width = e2->retornar_w();
+	r2.Height = e2->retornar_h();
+
+	return r1.IntersectsWith(r2);
+}
+
+bool Juego::ayudaColision_ambulancia_enemigo(Adversario* e1, Ambulancia* e2) {
 	Rectangle r1, r2;
 
 	r1.X = e1->return_pos_x();
@@ -178,12 +195,25 @@ void Juego::colisiones(){
 	if (jugador_user->retornar_cantidad_proyectiles() > 0 && cantidad_adversarios > 0) {//Si hay proyectiles y enemigos actualmente
 		for (int adv = 0; adv < cantidad_adversarios; adv++) {
 			for (int bala = 0; bala < jugador_user->retornar_cantidad_proyectiles(); bala++) {
-				if (ayudaColisionEnemigo_proyectil(arreglo_adversarios[adv], jugador_user->arreglo_proyectiles[bala])) {//Si una bala choca con un enemigo
+				if (ayudaColisionEnemigo_proyectil(arreglo_adversarios[adv], jugador_user->arreglo_proyectiles[bala]) && arreglo_adversarios[adv]->vivo) {//Si una bala choca con un enemigo
+					if (arreglo_adversarios[adv]->retornar_color() == 1) jugador_user->añadir_10puntos();
 					jugador_user->arreglo_proyectiles[bala]->cambiar_eliminar(true);
 					arreglo_adversarios[adv]->cambiar_color();
+					//arreglo_adversarios[adv]->vivo = false;
 				}
 			}
 		}
 	}
+
+	//Ambulancia con los rojos
+	for (int adv = 0; adv < cantidad_adversarios; adv++) {
+		if (ayudaColision_ambulancia_enemigo(arreglo_adversarios[adv], ambulancia)) {
+			if (arreglo_adversarios[adv]->conseguir_tipo() == 2 && arreglo_adversarios[adv]->retornar_color() == 2) {
+				arreglo_adversarios[adv]->vivo = false;
+				ambulancia->numero_objetivo = 100;
+			}
+		}
+	}
+
 
 }

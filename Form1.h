@@ -26,14 +26,14 @@ namespace CppCLRWinformsProjekt {
 			img_adversario_saludable = gcnew Bitmap("Infectado_saludable_normal_v2.png");
 			img_adversario_saludable_marcado = gcnew Bitmap("Infectado_saludable_verde_V2.png");
 			//Enemigos asintomáticos
-			//img_adversario_asintomatico = gcnew Bitmap("Infectado_asintomatico_normal.png");
-			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo.png");
+			img_adversario_asintomatico = gcnew Bitmap("Infectado_asintomatico_normal.png");
+			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo_v2.png");
 			//Policía
 
 
 			//Proyectiles y vehículos
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
-			img_ambulancia = gcnew Bitmap("ambulancia_sprite.png");
+			img_ambulancia = gcnew Bitmap("ambulancia.png");
 
 			//******************************************************************************
 
@@ -77,9 +77,10 @@ namespace CppCLRWinformsProjekt {
 		//Mapas
 		Bitmap^ mapa_1_sjl;
 
-		//**************Contador
+		//**************Contador y puntos
 		String^ segundero;
 		String^ minutero;
+		String^ puntos;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -127,7 +128,8 @@ namespace CppCLRWinformsProjekt {
 		
 		//Juego***********************************************************************************
 		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles,
-			img_ambulancia, img_adversario_saludable, img_adversario_saludable_marcado ,segundero, minutero);
+			img_ambulancia, img_adversario_saludable, img_adversario_saludable_marcado, 
+			img_adversario_asintomatico, img_adversario_asintomatico_marcado, segundero, minutero, puntos);
 
 
 

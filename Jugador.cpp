@@ -6,10 +6,13 @@ Jugador::Jugador() {}
 Jugador::Jugador(int pini_f, int pfin_f, int pini_c, int pfin_c): Personaje(pini_f, pfin_f, pini_c, pfin_c) {
 	pos_x = 100;
 	pos_y = 40;
-	direccion = 0;
+	direccion = puntos = 0;
 	velocidad = 5;
 }
 Jugador::~Jugador(){}
+
+void Jugador::añadir_10puntos() { puntos += 10; }
+int Jugador::retornar_puntos() { return puntos; }
 
 void Jugador::disparar() {
 	Proyectil** copia = new Proyectil * [cantidad_proyectiles + 1];
@@ -97,39 +100,6 @@ void Jugador::caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles) {
 	*/
 	dy = dx = 0;
 
-	//switch (direccion) {
-
-	//case 0: {//Arriba
-	//	if (pos_y  > g->VisibleClipBounds.Top) dy = -velocidad; dx = 0;
-	//	sc++;
-	//	sf = 3;
-	//	break;
-	//}
-	//case 1: {// Abajo
-	//	if (pos_y + h < g->VisibleClipBounds.Bottom ) dy = velocidad; dx = 0;
-	//	sc++;
-	//	sf = 0;
-	//	break;
-	//}
-	//case 2: {//izq
-	//	if (pos_x  > g->VisibleClipBounds.Left && pos_x > 25) dx = -velocidad; dy = 0;
-	//	sc++;
-	//	sf = 2;
-	//	break; 
-	//
-	//}
-	//case 3: {//derecha
-	//	if (pos_x + w < g->VisibleClipBounds.Right && (pos_x  + w < 50 + w)) dx = velocidad; dy = 0;
-	//	sc++;
-	//	sf = 1;
-	//	break; 
-	//
-	//}
-	//case 4: {dy = 0; dx = 0; sc = 1;
-	//	if (sf == 2) sc = 0;
-	//break;}
-	//default: break;
-	//}
 
 	//Coordenadas en base a los pies (abajo derecha).
 	w = img->Width / 4;
@@ -190,24 +160,6 @@ bool Jugador::determinar_disponibilidad_posicion(int x, int y, int direccion) {
 
 	if (limites_mapa[y][x] == 1) return true;
 	else {
-		//for (int i = 1; i <= 4; i++) {// Si se chocha contra una pared ajustar sus coordenadas con las máximas
-		//	if (limites_mapa[pos_y + i][pos_x] == 1 && direccion == 1) {
-		//		pos_y = pos_y + i;
-		//		return true;
-		//	}
-		//	if (limites_mapa[pos_y - i][pos_x] == 1 && direccion == 0) {
-		//		pos_y = y - i;
-		//		return true;
-		//	}
-		//	if (limites_mapa[pos_y][pos_x + i] == 1 && direccion == 3) {
-		//		pos_y = x + i;
-		//		return true;
-		//	}
-		//	if (pos_x - i - w  >= 0 && limites_mapa[pos_y][pos_x - i - w] == 1 && direccion == 2) {
-		//		pos_y = x - i - w;
-		//		return true;
-		//	}
-		//}
 		dy = 0; dx = 0; 
 		return false;
 	}

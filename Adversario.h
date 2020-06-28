@@ -10,12 +10,14 @@ private:
 	std::string posicion;
 	std::string posicion_destino;
 public:
+	bool vivo;
 	Adversario();
 	Adversario(int pini_f, int pfin_f, int pini_c, int pfin_c);
 	~Adversario();
 
-	void mover(Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado, int contador_timer);
+	void mover(Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado, Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, int contador_timer);
 	void cambiar_color();
+	int retornar_color();
 
 	void establecer_tipo(int nuevo);
 	int conseguir_tipo();
@@ -24,7 +26,9 @@ public:
 	void establecer_posicion_destino(std::string nuevo);
 
 	void caminar_desde_hasta(std::string pos_inicial, std::string pos_final,
-		Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado, int contador_timer);
+		Graphics^ g, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
+		Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado,
+		int contador_timer);
 
 	
 };
