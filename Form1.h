@@ -19,12 +19,26 @@ namespace CppCLRWinformsProjekt {
 		{
 			InitializeComponent();
 			obj = new Juego();
-			img_jugador = gcnew Bitmap("jugador_sprites10.png");
-			img_adversario_tipo1 = gcnew Bitmap("infectadoG_sprites.png");
+			//********************************* sprites **********************************
+			//Jugador
+			img_jugador = gcnew Bitmap("jugador_principal.png");
+			//Enemigos saludables
+			img_adversario_saludable = gcnew Bitmap("Infectado_saludable_normal_v2.png");
+			img_adversario_saludable_marcado = gcnew Bitmap("Infectado_saludable_verde.png");
+			//Enemigos asintomáticos
+			//img_adversario_asintomatico = gcnew Bitmap("Infectado_asintomatico_normal.png");
+			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo.png");
+			//Policía
+
+
+			//Proyectiles y vehículos
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
 			img_ambulancia = gcnew Bitmap("ambulancia_sprite.png");
 
-			mapa1 = gcnew Bitmap("mapa_sjl.png");
+			//******************************************************************************
+
+			//Mapas
+			mapa_1_sjl = gcnew Bitmap("mapa_sjl.png");
 		}
 
 	protected:
@@ -44,11 +58,28 @@ namespace CppCLRWinformsProjekt {
 
 	private:
 		Juego* obj;
+
+		// Sprites
 		Bitmap^ img_jugador;
-		Bitmap^ img_adversario_tipo1;
+
+		Bitmap^ img_adversario_saludable;
+		Bitmap^ img_adversario_saludable_marcado;
+
+		Bitmap^ img_adversario_asintomatico;
+		Bitmap^ img_adversario_asintomatico_marcado;
+
+
 		Bitmap^ img_proyectiles;
 		Bitmap^ img_ambulancia;
-		Bitmap^ mapa1;
+		//*************************************************
+
+
+		//Mapas
+		Bitmap^ mapa_1_sjl;
+
+		//**************Contador
+		String^ segundero;
+		String^ minutero;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -81,23 +112,35 @@ namespace CppCLRWinformsProjekt {
 		}
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+
+		//Buffer**********************************************************************************
 		Graphics^ g = this->CreateGraphics();
 		BufferedGraphicsContext^ espaciobuffer = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = espaciobuffer->Allocate(g, this->ClientRectangle);
-
 		buffer->Graphics->Clear(Color::White);
+		//****************************************************************************************
 
-		Rectangle porcion_dibujo = Rectangle(0, 0, mapa1->Width, mapa1->Height);
-		buffer->Graphics->DrawImage(mapa1, 0, 0, porcion_dibujo, GraphicsUnit::Pixel);
+		//Mapa************************************************************************************
+		Rectangle porcion_dibujo = Rectangle(0, 0, mapa_1_sjl->Width, mapa_1_sjl->Height);
+		buffer->Graphics->DrawImage(mapa_1_sjl, 0, 0, porcion_dibujo, GraphicsUnit::Pixel);
+		//****************************************************************************************
+		
+		//Juego***********************************************************************************
+		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles,
+			img_ambulancia, img_adversario_saludable, segundero, minutero);
+
+		//Prueba escribir en pantalla*************************************************************
 
 
-		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles, img_ambulancia, img_adversario_tipo1);
+		//****************************************************************************************
 
+		//Buffer**********************************************************************************
 		buffer->Render(g);
-
 		delete buffer;
 		delete espaciobuffer;
 		delete g;
+		//****************************************************************************************
+
 
 		
 	}
