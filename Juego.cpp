@@ -429,7 +429,7 @@ void Juego::colisiones(){
 
 	//Enemigos y jugador
 	for (int adv = 0; adv < cantidad_adversarios; adv++) {
-		if (!(arreglo_adversarios[adv]->ladron) && !inmunidad) {//Si no es el ladron y no está activa la inmunidad
+		if (!(arreglo_adversarios[adv]->ladron) && (arreglo_adversarios[adv]->vivo) && !inmunidad) {//Si no es el ladron, está vivo y no está activa la inmunidad
 			if (ayudaColision_jugador_enemigo(jugador_user, arreglo_adversarios[adv])) {
 				vidas--;
 				inmunidad = true;

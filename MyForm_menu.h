@@ -38,8 +38,8 @@ namespace MenuJuego {
 		}
 	private: System::Windows::Forms::Button^ buttonJugar;
 	private: System::Windows::Forms::Button^ buttonInstrucciones;
-	private: System::Windows::Forms::TextBox^ textBoxNombreUsuario;
-	private: System::Windows::Forms::Label^ label1;
+	//private: System::Windows::Forms::TextBox^ textBoxNombreUsuario;
+	//private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::ComboBox^ comboBoxNivel;
@@ -73,8 +73,8 @@ namespace MenuJuego {
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm_Menu::typeid));
 			this->buttonJugar = (gcnew System::Windows::Forms::Button());
 			this->buttonInstrucciones = (gcnew System::Windows::Forms::Button());
-			this->textBoxNombreUsuario = (gcnew System::Windows::Forms::TextBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
+			//this->textBoxNombreUsuario = (gcnew System::Windows::Forms::TextBox());
+			//this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->comboBoxNivel = (gcnew System::Windows::Forms::ComboBox());
@@ -114,28 +114,28 @@ namespace MenuJuego {
 			this->buttonInstrucciones->Click += gcnew System::EventHandler(this, &MyForm_Menu::button2_Click);
 			// 
 			// textBoxNombreUsuario
-			// 
-			this->textBoxNombreUsuario->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->textBoxNombreUsuario->Location = System::Drawing::Point(413, 239);
-			this->textBoxNombreUsuario->MaxLength = 32;
-			this->textBoxNombreUsuario->Name = L"textBoxNombreUsuario";
-			this->textBoxNombreUsuario->Size = System::Drawing::Size(210, 23);
-			this->textBoxNombreUsuario->TabIndex = 2;
-			this->textBoxNombreUsuario->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			//// 
+			//this->textBoxNombreUsuario->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular,
+			//	System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			//this->textBoxNombreUsuario->Location = System::Drawing::Point(413, 239);
+			//this->textBoxNombreUsuario->MaxLength = 32;
+			//this->textBoxNombreUsuario->Name = L"textBoxNombreUsuario";
+			//this->textBoxNombreUsuario->Size = System::Drawing::Size(210, 23);
+			//this->textBoxNombreUsuario->TabIndex = 2;
+			//this->textBoxNombreUsuario->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// label1
 			// 
-			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::Black;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Consolas", 15, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(199, 239);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(208, 23);
-			this->label1->TabIndex = 3;
-			this->label1->Text = L"Escriba su nombre:";
+			//this->label1->AutoSize = true;
+			//this->label1->BackColor = System::Drawing::Color::Black;
+			//this->label1->Font = (gcnew System::Drawing::Font(L"Consolas", 15, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			//	static_cast<System::Byte>(0)));
+			//this->label1->ForeColor = System::Drawing::Color::White;
+			//this->label1->Location = System::Drawing::Point(199, 239);
+			//this->label1->Name = L"label1";
+			//this->label1->Size = System::Drawing::Size(208, 23);
+			//this->label1->TabIndex = 3;
+			//this->label1->Text = L"Escriba su nombre:";
 			// 
 			// label2
 			// 
@@ -233,8 +233,8 @@ namespace MenuJuego {
 			this->Controls->Add(this->comboBoxNivel);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
-			this->Controls->Add(this->label1);
-			this->Controls->Add(this->textBoxNombreUsuario);
+			//this->Controls->Add(this->label1);
+			//this->Controls->Add(this->textBoxNombreUsuario);
 			this->Controls->Add(this->buttonInstrucciones);
 			this->Controls->Add(this->buttonJugar);
 			this->Name = L"MyForm_Menu";

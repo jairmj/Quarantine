@@ -1,6 +1,5 @@
 ﻿  CppCLR_WinformsProjekt.cpp
 C:\Users\USUARIO\Desktop\Quarantine\CppCLR_WinformsProjekt.cpp(19,12): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
-  Juego.cpp
   MyForm_menu.cpp
   Generando código...
   Adversario.obj : se encontró un módulo MSIL; vinculación incremental deshabilitada para MSIL; ejecutando vínculo completo
