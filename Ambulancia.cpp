@@ -10,7 +10,7 @@ Ambulancia::Ambulancia(int pini_f, int pfin_f, int pini_c, int pfin_c): Personaj
 }
 Ambulancia::~Ambulancia(){}
 
-void Ambulancia::mover(Graphics^ g, Bitmap^ img_ambulancia, Adversario** arreglo_adversarios, int cantidad_adversarios){
+void Ambulancia::mover(Graphics^ g, Bitmap^ img_ambulancia, Bitmap^ img_exclamacion,Adversario** arreglo_adversarios, int cantidad_adversarios){
 	if (!activado) aparicion_aleatoria++;
 
 	if (aparicion_aleatoria == 100 || activado) {
@@ -26,6 +26,7 @@ void Ambulancia::mover(Graphics^ g, Bitmap^ img_ambulancia, Adversario** arreglo
 		w = img_ambulancia->Width / 4;
 		h = img_ambulancia->Height / 4;
 		if (numero_objetivo != 100) {//Ha encontado un objetivo a por el cual ir
+			exclamacion = true;//Se activa la exclamacion
 			if (arreglo_adversarios[numero_objetivo]->return_pos_x() > pos_x && arreglo_adversarios[numero_objetivo]->return_pos_x() > pos_x + 10) {//Está a la derecha
 				sf = 2;
 				if (dx < 0) dx *= -1;
@@ -48,6 +49,7 @@ void Ambulancia::mover(Graphics^ g, Bitmap^ img_ambulancia, Adversario** arreglo
 
 		}
 		else {//No hay objetivos, se mueve de izquierda a derecha
+			exclamacion = false;
 			if (pos_x + dx < g->VisibleClipBounds.Left) dx *= -1;
 			if (pos_x + dx + w > g->VisibleClipBounds.Right) dx *= -1;
 
@@ -66,5 +68,11 @@ void Ambulancia::mover(Graphics^ g, Bitmap^ img_ambulancia, Adversario** arreglo
 		if (sc == 4) sc = 0;
 		dibujar(g, img_ambulancia);
 		activado = true;
+
+		if (exclamacion) {//Dibujo la exclamacion arriba del policia
+			Rectangle porcion_dibujo = Rectangle(0, 0, img_exclamacion->Width, img_exclamacion->Height);
+			g->DrawImage(img_exclamacion, pos_x + w / 2 - 15, pos_y - h/2, porcion_dibujo, GraphicsUnit::Pixel);
+
+		}
 	}
 }

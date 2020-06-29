@@ -15,26 +15,27 @@ using namespace System::Drawing;
 class Juego
 {
 private:
-	int segundos, minutos, contador_timer, eleccion;
+	int segundos, minutos, contador_timer, eleccion, timer_inmunidad;
 	int pantalla_inicio, mapa_principal;
 	int cantidad_adversarios, cantidad_maxima_adversarios, cantidad_adv_tipo1,
 		cantidad_adv_tipo2, cantidad_adverasrios_eliminados;
-	bool fase_inicial, final_v1, final_v2;
+	bool fase_inicial, final_v1, final_v2, game_over, pantalla_game_over, pantalla_you_win, inmunidad, apoyo_inmunidad;
 	Jugador* jugador_user;
 	Adversario** arreglo_adversarios;
 	Ambulancia* ambulancia;
 	Policia* policia;
 	Adversario* adversario_tipo1;
 public:
-	
+	bool game_over_v2;
+	int vidas, dificultad, tiempo;
 	Juego();
 	~Juego();
 	void mostrar_inicio();
 	void dibujar_mapa(Graphics^ g, Bitmap^ img_mapa);
-	void dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, Bitmap^ mapa_sjl, Bitmap^ mapa_brena,
+	void dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, Bitmap^ img_pociones, Bitmap^ mapa_sjl, Bitmap^ mapa_brena,
 		Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
 		Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, Bitmap^ img_policia,
-		Bitmap^ img_ladron, String^ segundero, String^ minutero, String^ puntos_string);
+		Bitmap^ img_ladron, Bitmap^ img_exclamacion, Bitmap^ img_game_over, Bitmap^ img_you_win, String^ segundero, String^ minutero, String^ puntos_string);
 	void Init();
 	Adversario* crear_enemigo(int tipo, bool ladron);
 	void cambiar_direccion(int direccion);
@@ -46,6 +47,8 @@ public:
 	bool ayudaColision_ambulancia_enemigo(Adversario* e1, Ambulancia* e2);
 	bool ayudaColision_policia_enemigo(Adversario* e1, Policia* e2);
 	bool ayudaColision_jugador_enemigo(Jugador* e1, Adversario* e2);
+	bool ayudaColision_jugador_proyectil(Jugador* e1, Proyectil* e2);
 	void reset();
+	void mostrar_vidas(Graphics^ g, int vidas, String^ puntos_string);
 };
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Juego.h"
 #include <iostream>
+#include <conio.h>
 #include <string>
 #include <sstream>
 
@@ -86,9 +87,9 @@ Adversario* Juego::crear_enemigo(int tipo, bool ladron) {
 }
 
 void Juego::Init() {
+
 	cantidad_adv_tipo1 = cantidad_adv_tipo2 = 0;
 	cantidad_maxima_adversarios = rand() % 6 + 5;
-	cantidad_maxima_adversarios = 1;
 	arreglo_adversarios = new Adversario * [cantidad_maxima_adversarios + 1];
 	cantidad_adversarios = 0;
 	
@@ -107,93 +108,128 @@ void Juego::Init() {
 
 	contador_timer = segundos = minutos = cantidad_adverasrios_eliminados = mapa_principal = 0;
 	fase_inicial = true;
-	final_v1 = final_v2 = false;
+	final_v1 = final_v2 = game_over = pantalla_game_over = pantalla_you_win = inmunidad = apoyo_inmunidad = false;
+	game_over_v2 = false;
+	timer_inmunidad = -1;
 }
 void Juego::mostrar_inicio(){}
 
-void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, Bitmap^ mapa_sjl, Bitmap^ mapa_brena,
+void Juego::dinamica_juego(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, Bitmap^ img_pociones, Bitmap^ mapa_sjl, Bitmap^ mapa_brena,
 							Bitmap^ img_ambulancia, Bitmap^ img_adversario_tipo1, Bitmap^ img_adversario_tipo1_marcado,
 							Bitmap^ img_adversario_tipo2, Bitmap^ img_adversario_tipo2_marcado, Bitmap^ img_policia,
-							Bitmap^ img_ladron, String^ segundero, String^ minutero, String^ puntos_string)
+							Bitmap^ img_ladron, Bitmap^ img_exclamacion, Bitmap^ img_game_over, Bitmap^ img_you_win, String^ segundero, String^ minutero, String^ puntos_string)
 {
+		if (!pantalla_game_over && !pantalla_you_win) {//Si ni el game over ni el you win se han activado
+			if (mapa_principal == 0) dibujar_mapa(g, mapa_brena);
+			else if (mapa_principal == 1) dibujar_mapa(g, mapa_sjl);
 
-	if (mapa_principal == 0) dibujar_mapa(g, mapa_sjl);
-	else if (mapa_principal == 1) dibujar_mapa(g, mapa_brena);
 
+			colisiones();
 
-	colisiones();
-
-	contador_timer++; //Aumenta 1 cada 100 ms, cada 10 es 1 segundo
-	if (contador_timer % 10 == 0 && contador_timer != 0) {
-		segundos++;
-		if (segundos == 60) {
-			minutos++;
-			segundos = 0;
-		}
+			contador_timer++; //Aumenta 1 cada 100 ms, cada 10 es 1 segundo
+			if (contador_timer % 10 == 0 && contador_timer != 0) {
+				segundos++;
+				if (segundos == 60) {
+					minutos++;
+					segundos = 0;
+				}
 	
 
-		if (segundos % 10 == 0 && segundos != 0) {
-			switch (rand() % 2 + 1)// 1 y 2
-			{
-			case 1: {
-				if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
-					if (cantidad_adv_tipo1 <= cantidad_maxima_adversarios / 2) {
-						crear_enemigo(1, false);
-						cantidad_adv_tipo1++;// es 3
+				if (segundos % 10 == 0 && segundos != 0) {
+					switch (rand() % 2 + 1)// 1 y 2
+					{
+					case 1: {
+						if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
+							if (cantidad_adv_tipo1 <= cantidad_maxima_adversarios / 2) {
+								crear_enemigo(1, false);
+								cantidad_adv_tipo1++;// es 3
+							}
+							else {
+								crear_enemigo(2, false);
+								cantidad_adv_tipo2++;// es 1
+							}
+						}
+						break;
 					}
-					else {
-						crear_enemigo(2, false);
-						cantidad_adv_tipo2++;// es 1
+					case 2: {
+						if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
+							if (cantidad_adv_tipo2 <= cantidad_maxima_adversarios / 2) {
+								crear_enemigo(2, false);
+								cantidad_adv_tipo2++;
+							}
+							else {
+								crear_enemigo(1, false);
+								cantidad_adv_tipo1++;
+							}
+						}
+						break;
+					}
+					default:
+						break;
 					}
 				}
-				break;
 			}
-			case 2: {
-				if (cantidad_adv_tipo1 + cantidad_adv_tipo2 < cantidad_maxima_adversarios) {
-					if (cantidad_adv_tipo2 <= cantidad_maxima_adversarios / 2) {
-						crear_enemigo(2, false);
-						cantidad_adv_tipo2++;
-					}
-					else {
-						crear_enemigo(1, false);
-						cantidad_adv_tipo1++;
-					}
-				}
-				break;
+
+
+			if (inmunidad && apoyo_inmunidad) {//La inmunidad se activó, en 3 segundos se irá
+				timer_inmunidad = segundos + 3;
+				apoyo_inmunidad = false;
 			}
-			default:
-				break;
+
+			if (timer_inmunidad == segundos) {
+				inmunidad = false; //Pasaron 3 segundos, desactivo inmunidad
+				timer_inmunidad = -1;
+			}
+	
+			mostrar_vidas(g, vidas, puntos_string);
+			mostrar_tiempo(g, segundero, minutero);
+			mostrar_puntos(g, puntos_string);
+			jugador_user->caminar(g, img, img_proyectiles, mapa_principal);
+			ambulancia->mover(g, img_ambulancia, img_exclamacion,arreglo_adversarios, cantidad_adversarios);
+			policia->mover(g, img_policia, img_exclamacion ,arreglo_adversarios, cantidad_adversarios);
+			for (int i = 0; i < cantidad_adversarios; i++) {
+				arreglo_adversarios[i]->mover(g,img_adversario_tipo1, img_adversario_tipo1_marcado,
+												img_adversario_tipo2, img_adversario_tipo2_marcado,img_ladron, img_pociones,
+												*jugador_user, contador_timer, dificultad);
+			}
+
+			//Funcionalidad adicional
+
+			if (cantidad_adverasrios_eliminados == cantidad_maxima_adversarios && fase_inicial) {//Si ha matado a todos
+				fase_inicial = false;
+				MessageBox::Show("Ha aparecido un ladrón en el distrito!\n¡ayuda al policia a capturarlo yendo a por él!", "¡CUIDADO!",
+					MessageBoxButtons::OK, MessageBoxIcon::Error);
+				crear_enemigo(1, true);//Creo al ladrón
+				cantidad_maxima_adversarios++;//Se añade el nuevo adversario
+				cantidad_adv_tipo1++;
+			}
+
+			//Final del juego
+			if (final_v2) {
+				reset();
+			}
+		
+
+			if (minutos == tiempo || vidas == 0) {
+				game_over_v2 = true;
 			}
 		}
-	}
-	
+		else if(pantalla_game_over){//Se activó game over
+			dibujar_mapa(g, img_game_over);
+		}
+		else if (pantalla_you_win) {//El jugador ha ganado
+			dibujar_mapa(g, img_you_win);
+		}
 
-	mostrar_tiempo(g, segundero, minutero);
-	mostrar_puntos(g, puntos_string);
-	jugador_user->caminar(g, img, img_proyectiles);
-	ambulancia->mover(g, img_ambulancia, arreglo_adversarios, cantidad_adversarios);
-	policia->mover(g, img_policia, arreglo_adversarios, cantidad_adversarios);
-	for (int i = 0; i < cantidad_adversarios; i++) {
-		arreglo_adversarios[i]->mover(g,img_adversario_tipo1, img_adversario_tipo1_marcado,
-										img_adversario_tipo2, img_adversario_tipo2_marcado,img_ladron, contador_timer);
-	}
-	//adversario_tipo1->mover(g, img_adversario_tipo1, contador_timer);
+		if (game_over_v2) {
+			game_over_v2 = false;
+			pantalla_game_over = true;
+			if(minutos == tiempo) MessageBox::Show("¡Te has quedado sin tiempo!\n pulse r para reiniciar", "GAME OVER",
+				MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+			if(vidas == 0)MessageBox::Show("¡Te has quedado sin vidas!\n pulse r para reiniciar", "GAME OVER",
+				MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+		}
 
-	//Funcionalidad adicional
-
-	if (cantidad_adverasrios_eliminados == cantidad_maxima_adversarios && fase_inicial) {//Si ha matado a todos
-		fase_inicial = false;
-		MessageBox::Show("Ha aparecido un ladrón en el distrito!\n¡ayuda al policia a capturarlo yendo a por él!", "¡CUIDADO!",
-			MessageBoxButtons::OK, MessageBoxIcon::Error);
-		crear_enemigo(1, true);//Creo al ladrón
-		cantidad_maxima_adversarios++;//Se añade el nuevo adversario
-		cantidad_adv_tipo1++;
-	}
-
-	//Final del juego
-	if (final_v2) {
-		reset();
-	}
 }
 
 void Juego::cambiar_direccion(int direccion) {
@@ -209,7 +245,7 @@ void Juego::mostrar_tiempo(Graphics^ g, String^ segundero, String^ minutero) {
 
 
 
-	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Arial", 20);
+	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Consolas", 20);
 	System::Drawing::SolidBrush^ mybrush = gcnew System::Drawing::SolidBrush(Color::Black);
 
 	if (segundos > 9) {
@@ -227,11 +263,22 @@ void Juego::mostrar_tiempo(Graphics^ g, String^ segundero, String^ minutero) {
 void Juego::mostrar_puntos(Graphics^ g, String^ puntos_string) {
 
 	puntos_string = "Puntos: " + jugador_user->retornar_puntos().ToString();
-	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Arial", 20);
+	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Consolas", 20);
 	System::Drawing::SolidBrush^ mybrush = gcnew System::Drawing::SolidBrush(Color::Black);
-	g->DrawString(puntos_string, myfont, mybrush, 950, 10);
+	g->DrawString(puntos_string, myfont, mybrush, 900, 10);
 	
 }
+
+void Juego::mostrar_vidas(Graphics^ g, int vidas, String^ puntos_string) {
+
+	puntos_string = "Vidas: " + vidas.ToString();
+	System::Drawing::Font^ myfont = gcnew System::Drawing::Font("Consolas", 20);
+	System::Drawing::SolidBrush^ mybrush = gcnew System::Drawing::SolidBrush(Color::Black);
+	g->DrawString(puntos_string, myfont, mybrush, 900, 40);
+	
+}
+
+
 
 bool Juego::ayudaColisionEnemigo_proyectil(Adversario* e1, Proyectil* e2) {
 	Rectangle r1, r2;
@@ -284,6 +331,23 @@ bool Juego::ayudaColision_policia_enemigo(Adversario* e1, Policia* e2) {
 	return r1.IntersectsWith(r2);
 }
 bool Juego::ayudaColision_jugador_enemigo(Jugador* e1, Adversario* e2) {
+	Rectangle r1, r2;
+
+	r1.X = e1->return_pos_x();
+	r1.Y = e1->return_pos_y();
+	r1.Width = e1->retornar_w();
+	r1.Height = e1->retornar_h();
+
+
+	r2.X = e2->return_pos_x();
+	r2.Y = e2->return_pos_y();
+	r2.Width = e2->retornar_w();
+	r2.Height = e2->retornar_h();
+
+	return r1.IntersectsWith(r2);
+}
+
+bool Juego::ayudaColision_jugador_proyectil(Jugador* e1, Proyectil* e2) {
 	Rectangle r1, r2;
 
 	r1.X = e1->return_pos_x();
@@ -353,6 +417,26 @@ void Juego::colisiones(){
 		}
 	}
 
+	//Proyectiles y jugador
+	for (int adv = 0; adv < cantidad_adversarios; adv++) {
+		for (int bala = 0; bala < arreglo_adversarios[adv]->retornar_cantidad_proyectiles(); bala++) {
+			if (ayudaColision_jugador_proyectil(jugador_user, arreglo_adversarios[adv]->arreglo_proyectiles[bala])) {
+				vidas--;
+				arreglo_adversarios[adv]->arreglo_proyectiles[bala]->cambiar_eliminar(true);
+			}
+		}
+	}
+
+	//Enemigos y jugador
+	for (int adv = 0; adv < cantidad_adversarios; adv++) {
+		if (!(arreglo_adversarios[adv]->ladron) && !inmunidad) {//Si no es el ladron y no está activa la inmunidad
+			if (ayudaColision_jugador_enemigo(jugador_user, arreglo_adversarios[adv])) {
+				vidas--;
+				inmunidad = true;
+				apoyo_inmunidad = true;
+			}
+		}
+	}
 
 }
 
@@ -364,6 +448,11 @@ void Juego::dibujar_mapa(Graphics^ g, Bitmap^ img_mapa) {
 
 
 void Juego::reset() {
+	if (mapa_principal == 0) {
 	Init();
 	mapa_principal = 1;
+	}
+	else {//El jugador ganó
+		pantalla_you_win = true;
+	}
 }

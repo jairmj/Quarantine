@@ -152,6 +152,12 @@
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="Limites_mapa.h" />
+    <ClInclude Include="MyForm_instrucciones.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="MyForm_menu.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Policia.h" />
@@ -167,6 +173,8 @@
     <ClCompile Include="Form1.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="Jugador.cpp" />
+    <ClCompile Include="MyForm_instrucciones.cpp" />
+    <ClCompile Include="MyForm_menu.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -191,6 +199,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyForm_instrucciones.resx">
+      <DependentUpon>MyForm_instrucciones.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyForm_menu.resx">
+      <DependentUpon>MyForm_menu.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

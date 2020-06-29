@@ -30,6 +30,7 @@ namespace CppCLRWinformsProjekt {
 			img_adversario_asintomatico_marcado = gcnew Bitmap("Infectado_asintomatico_rojo_v2.png");
 			//Proyectiles y encautadores 
 			img_proyectiles = gcnew Bitmap("sprite_balas.png");
+			img_pociones = gcnew Bitmap("Proyectil_enemigo.png");
 			img_ambulancia = gcnew Bitmap("ambulancia.png");
 			img_policia = gcnew Bitmap("img_policia_v2.png");
 			//Ladron
@@ -40,8 +41,12 @@ namespace CppCLRWinformsProjekt {
 			//Mapas
 			mapa_1_sjl = gcnew Bitmap("mapa_sjl.png");
 			mapa_brena = gcnew Bitmap("mapa_brena.png");
-		}
 
+			//Extras
+			exclamacion = gcnew Bitmap("exclamacion.png");
+			img_game_over = gcnew Bitmap("game_over.jpg");
+			img_you_win = gcnew Bitmap("you_win.jpg");
+		}
 	protected:
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
@@ -58,6 +63,8 @@ namespace CppCLRWinformsProjekt {
 	private: System::ComponentModel::IContainer^ components;
 
 	private:
+		int vidas_copia, dificultad, tiempo;
+
 		Juego* obj;
 
 		// Sprites
@@ -71,6 +78,7 @@ namespace CppCLRWinformsProjekt {
 
 
 		Bitmap^ img_proyectiles;
+		Bitmap^ img_pociones;
 		Bitmap^ img_ambulancia;
 		Bitmap^ img_policia;
 		Bitmap^ img_ladron;
@@ -85,6 +93,11 @@ namespace CppCLRWinformsProjekt {
 		String^ segundero;
 		String^ minutero;
 		String^ puntos;
+
+		//Extras
+		Bitmap^ exclamacion;
+		Bitmap^ img_game_over;
+		Bitmap^ img_you_win;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -125,17 +138,12 @@ namespace CppCLRWinformsProjekt {
 		buffer->Graphics->Clear(Color::White);
 		//****************************************************************************************
 
-		//Mapa************************************************************************************
-		
-		//****************************************************************************************
 		
 		//Juego***********************************************************************************
-		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles, mapa_1_sjl, mapa_brena,
+		obj->dinamica_juego(buffer->Graphics, img_jugador, img_proyectiles, img_pociones, mapa_1_sjl, mapa_brena,
 			img_ambulancia, img_adversario_saludable, img_adversario_saludable_marcado, 
 			img_adversario_asintomatico, img_adversario_asintomatico_marcado, img_policia,
-			img_ladron, segundero, minutero, puntos);
-
-
+			img_ladron, exclamacion, img_game_over, img_you_win ,segundero, minutero, puntos);
 
 		//Prueba escribir en pantalla*************************************************************
 
@@ -160,14 +168,18 @@ namespace CppCLRWinformsProjekt {
 		3 = derecha
 		4 = neutro
 		*/
-		if (e->KeyChar == 119)//arriba
+		if (e->KeyChar == 119 || e->KeyChar == 87)//arriba
 			obj->cambiar_direccion(0);
-		if (e->KeyChar == 115)//abajo
+		if (e->KeyChar == 115 || e->KeyChar == 83)//abajo
 			obj->cambiar_direccion(1);
-		if (e->KeyChar == 97)//izquierda
+		if (e->KeyChar == 97 || e->KeyChar == 65)//izquierda
 			obj->cambiar_direccion(2);
-		if (e->KeyChar == 100)//derecha
+		if (e->KeyChar == 100 || e->KeyChar == 68)//derecha
 			obj->cambiar_direccion(3);
+		if (e->KeyChar == 114 || e->KeyChar == 82) {
+			obj->Init();//Reiniciar el juego
+			obj->vidas = vidas_copia;//reinicio las vidas
+		}
 	}
 	private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
 
@@ -176,5 +188,9 @@ namespace CppCLRWinformsProjekt {
 	private: System::Void Form1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		if (e->KeyCode == Keys::Space)obj->disparar();
 	}
+
+	public: void EstablecerVidas(int nuevo) { obj->vidas = nuevo; vidas_copia = nuevo; }
+	public: void EstablecerDificultad(int nuevo) { obj->dificultad = nuevo; }
+	public: void EstablecerTiempo(int nuevo) { obj->tiempo = nuevo; }
 };
 }

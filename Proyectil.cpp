@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Proyectil.h"
+#include <iostream>
 
 Proyectil::Proyectil() {}
 Proyectil::Proyectil(int pini_f, int pfin_f, int pini_c, int pfin_c) :
@@ -10,7 +11,7 @@ Proyectil::Proyectil(int pini_f, int pfin_f, int pini_c, int pfin_c) :
 Proyectil::~Proyectil() {}
 
 
-void Proyectil::Mover(Graphics^ g, Bitmap^ img_Proyectil) {
+void Proyectil::Mover(Graphics^ g, Bitmap^ img_Proyectil, int tipo) {
 	//Para dejar la variable que posteriormente las elminará si es que salen de los bordes
 	if (pos_x + dx < g->VisibleClipBounds.Left || pos_x + dx + w > g->VisibleClipBounds.Right) {
 		eliminar = true;
@@ -22,7 +23,11 @@ void Proyectil::Mover(Graphics^ g, Bitmap^ img_Proyectil) {
 	pos_y += dy;
 	//Variables para el sprite
 	w = img_Proyectil->Width ;
-	h = img_Proyectil->Height / 8;
+	if (tipo == 1) h = img_Proyectil->Height / 5;
+	if (tipo == 2) {
+		h = img_Proyectil->Height;
+		sf = 0;
+	}
 	dibujar(g, img_Proyectil);
 }
 void Proyectil::cambiar_eliminar(bool nuevo) {

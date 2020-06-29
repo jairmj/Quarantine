@@ -17,9 +17,9 @@ public:
 	int retornar_puntos();
 
 
-	void caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles);
+	void caminar(Graphics^ g, Bitmap^ img, Bitmap^ img_proyectiles, int mapa_principal);
 	void mover_proyectiles(Graphics^ g, Bitmap^ img_bala);
 	void disparar();
-	bool determinar_disponibilidad_posicion(int x, int y, int direccion);
+	bool determinar_disponibilidad_posicion(int x, int y, int direccion, int mapa_principal);
 };
 

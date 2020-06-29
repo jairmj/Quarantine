@@ -1,4 +1,6 @@
   Quarentine.Form1.resources - Embedded, ContainedInManifestFile, 
+  Quarentine.MyForm_instrucciones.resources - Embedded, ContainedInManifestFile, 
+  Quarentine.MyForm_menu.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Quarantine, Version=1.0.*, Culture=Todos los idiomas (todos los países): 
 	hash=SHA1, flags=PublicKey
@@ -15,5 +17,15 @@ Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=
 Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
 Class CppCLRWinformsProjekt.Form1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    EstablecerVidas(Int32): PrivateScope, Public, HideBySig
+    EstablecerDificultad(Int32): PrivateScope, Public, HideBySig
+    EstablecerTiempo(Int32): PrivateScope, Public, HideBySig
+Class MenuJuego.MyForm_Instrucciones1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class MenuJuego.MyForm_Menu: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
